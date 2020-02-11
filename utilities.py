@@ -314,3 +314,17 @@ def getNumberOfControlledGates(circuit):
             numCz += 1
     return numCx, numCy, numCz
 
+def convert_to_binarystring(results):
+    list=[]
+    for item in range(0,len(results)):
+        dict={}
+        co = results[item].data.counts
+        for i in range(0,2**5):
+            if(hasattr(co,hex(i))):
+                binstring="{0:b}".format(i).zfill(5)
+                counts = getattr(co, hex(i))
+                dict[binstring] = counts
+        list.append(dict)
+    return list
+
+
