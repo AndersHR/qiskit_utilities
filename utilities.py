@@ -242,10 +242,11 @@ def get_prob_meas1_prep0(backend):
     return val
 
 def get_cx_error_map(backend):
-    """function that returns a 2d array containing CX error rates.
-       N.B.: Works only for backends with up to 5 qubits.
     """
-    two_qubit_error_map = np.zeros((5, 5))
+    function that returns a 2d array containing CX error rates.
+    """
+    num_qubits=backend.configuration().n_qubits
+    two_qubit_error_map = np.zeros((num_qubits,num_qubits))
     backendproperties=backend.properties()
     gates=backendproperties.gates
     for i in range(0,len(gates)):
@@ -253,46 +254,13 @@ def get_cx_error_map(backend):
             cxname = getattr(gates[i],'name')
             error = getattr(getattr(gates[i],'parameters')[0], 'value')
             #print(cxname, error)
-            if cxname == 'cx0_1':
-                two_qubit_error_map[0][1] = error
-            elif cxname == 'cx0_2':
-                two_qubit_error_map[0][2] = error
-            elif cxname == 'cx0_3':
-                two_qubit_error_map[0][3] = error
-            elif cxname == 'cx0_4':
-                two_qubit_error_map[0][4] = error
-            elif cxname == 'cx1_0':
-                two_qubit_error_map[1][0] = error
-            elif cxname == 'cx1_2':
-                two_qubit_error_map[1][2] = error
-            elif cxname == 'cx1_3':
-                two_qubit_error_map[1][3] = error
-            elif cxname == 'cx1_4':
-                two_qubit_error_map[1][4] = error
-            elif cxname == 'cx2_0':
-                two_qubit_error_map[2][0] = error
-            elif cxname == 'cx2_1':
-                two_qubit_error_map[2][1] = error
-            elif cxname == 'cx2_3':
-                two_qubit_error_map[2][3] = error
-            elif cxname == 'cx2_4':
-                two_qubit_error_map[2][4] = error
-            elif cxname == 'cx3_0':
-                two_qubit_error_map[3][0] = error
-            elif cxname == 'cx3_1':
-                two_qubit_error_map[3][1] = error
-            elif cxname == 'cx3_2':
-                two_qubit_error_map[3][2] = error
-            elif cxname == 'cx3_4':
-                two_qubit_error_map[3][4] = error
-            elif cxname == 'cx4_0':
-                two_qubit_error_map[4][0] = error
-            elif cxname == 'cx4_1':
-                two_qubit_error_map[4][1] = error
-            elif cxname == 'cx4_2':
-                two_qubit_error_map[4][2] = error
-            elif cxname == 'cx4_3':
-                two_qubit_error_map[4][3] = error
+            for p in range(num_qubits):
+                for q in range(num_qubits):
+                    if p==q:
+                        continue
+                    if cxname == 'cx'+str(p)+'_'+str(q):
+                        two_qubit_error_map[p][q] = error
+                        break
     return two_qubit_error_map
 
 def getNumberOfControlledGates(circuit):
