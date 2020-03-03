@@ -183,6 +183,7 @@ def randomCircuit(G,cnots=0, depth=0): #Either cnots or depth can be zero, which
     circ.measure(q,c)
     return circ
 
+
 V = np.arange(0,5,1)
 E =[(0,1,1.0),(1,2,1.0),(2,3,1.0),(3,4,1.0),(4,5,1.0),(3,5,1.0)] 
 
