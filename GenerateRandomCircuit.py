@@ -1,6 +1,5 @@
 from qiskit import *
 import numpy as np
-import pylab as pl
 import networkx as nx
 import random as ran
 from qiskit.visualization import *
