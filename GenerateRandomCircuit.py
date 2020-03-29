@@ -196,18 +196,3 @@ def randomCircuit(G,cnots=0, depth=0, barrier=False): #Either cnots or depth can
     circ.measure(q,c)
     return circ
 
-V = np.arange(0,5,1)
-E =[(0,1,1.0),(1,2,1.0),(2,3,1.0),(3,4,1.0),(4,5,1.0),(3,5,1.0)] 
-
-G = nx.Graph()
-G.add_nodes_from(V)
-G.add_weighted_edges_from(E)
-#print('Edges:  ', G.edges())
-
-#print(createCircuit(np.array((np.pi,np.pi,.6,.4,.3,.8,2.1,0)),G,2).draw(output='text'))
-
-
-
-print(randomCircuit(G, 13, 12).draw(output='text'))
-
-print("Done")
