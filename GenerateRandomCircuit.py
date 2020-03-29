@@ -5,7 +5,7 @@ import networkx as nx
 import random as ran
 from qiskit.visualization import *
 
-def ranCircCXD(G, circ, cnots, depth, barrier):
+def ranCircCXD(G, circ, cnots, depth, barrier, cc, dd, num_V):
     if (2*cnots + 1 < depth):
         print("Impossible circuit parameters: number of CNOTs is too low to reach the desired depth. Try again with different parameters.")
     elif (depth*len(MI) < cnots):
@@ -99,7 +99,7 @@ def ranCircCXD(G, circ, cnots, depth, barrier):
                         lam = ran.uniform(0.0, 2*np.pi)
                         circ.u3(theta, phi, lam, j)
                             
-def ranCircCX(G, circ, cnots, barrier):
+def ranCircCX(G, circ, cnots, barrier, cc, num_V):
     print("Constructing circuit with ", cnots, " CNOTs and arbitrary depth...")
     n = 0
     while (n < cnots):
@@ -126,7 +126,7 @@ def ranCircCX(G, circ, cnots, barrier):
                 cc[node2].append('C')
                 cc[node1].append('X')
 
-def ranCircD(G, circ, depth, barrier):
+def ranCircD(G, circ, depth, barrier, cc, dd, num_V):
     print("Constructing circuit with arbitrarly many CNOTs and ", depth," depth...")
     d = 0
     while(d < depth):
@@ -161,7 +161,7 @@ def ranCircD(G, circ, depth, barrier):
         d = max(dd)
         print(d)
 
-def randomCircuit(G,cnots=0, depth=0, barrier=False): #Either cnots or depth can be zero, which means "unspecified".
+def randomCircuit(G, cnots=0, depth=0, barrier=False): #Either cnots or depth can be zero, which means "unspecified".
     V = list(G.nodes)
     num_V = len(V)
     L = nx.line_graph(G)
@@ -182,13 +182,13 @@ def randomCircuit(G,cnots=0, depth=0, barrier=False): #Either cnots or depth can
 
     #begin construction:
     if (cnots and depth):
-        ranCircCXD(G, circ, cnots, depth, barrier)
+        ranCircCXD(G, circ, cnots, depth, barrier, cc, dd, num_V)
 
     elif (cnots and not(depth)):
-        ranCircCX(G, circ, cnots, barrier)
+        ranCircCX(G, circ, cnots, barrier, cc, num_V)
                     
     elif (not(cnots) and depth):
-        ranCircD(G, circ, depth, barrier)
+        ranCircD(G, circ, depth, barrier, cc, dd, num_V)
     else:
         print("This will only return an empty circuit.")
     circ.barrier()
