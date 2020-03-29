@@ -5,7 +5,7 @@ import networkx as nx
 import random as ran
 from qiskit.visualization import *
 
-def ranCircCXD(G, circ, cnots, depth, barrier, cc, dd, num_V):
+def ranCircCXD(G, circ, cnots, depth, barrier, cc, dd, num_V, MI, V, L):
     if (2*cnots + 1 < depth):
         print("Impossible circuit parameters: number of CNOTs is too low to reach the desired depth. Try again with different parameters.")
     elif (depth*len(MI) < cnots):
@@ -86,9 +86,9 @@ def ranCircCXD(G, circ, cnots, depth, barrier, cc, dd, num_V):
                     circ.u3(theta, phi, lam, j)
                     
             for d in range(1,depth):
+                if(barrier):
+                    circ.barrier()
                 for j in V:
-                    if(barrier):
-                        circ.barrier()
                     if (isinstance(cc[j][d],list)):
                         if (cc[j][d][0] == 'C'):
                             if (cc[cc[j][d][1]][d] == 'X'):
@@ -159,7 +159,7 @@ def ranCircD(G, circ, depth, barrier, cc, dd, num_V):
             dd[node1] = max(dd[node1],dd[node2])
             dd[node2] = dd[node1]
         d = max(dd)
-        print(d)
+        #print(d)
 
 def randomCircuit(G, cnots=0, depth=0, barrier=False): #Either cnots or depth can be zero, which means "unspecified".
     V = list(G.nodes)
@@ -182,7 +182,7 @@ def randomCircuit(G, cnots=0, depth=0, barrier=False): #Either cnots or depth ca
 
     #begin construction:
     if (cnots and depth):
-        ranCircCXD(G, circ, cnots, depth, barrier, cc, dd, num_V)
+        ranCircCXD(G, circ, cnots, depth, barrier, cc, dd, num_V, MI, V, L)
 
     elif (cnots and not(depth)):
         ranCircCX(G, circ, cnots, barrier, cc, num_V)
