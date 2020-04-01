@@ -160,6 +160,19 @@ def ranCircD(G, circ, depth, barrier, cc, dd, num_V):
         d = max(dd)
         #print(d)
 
+
+def createGraph(backend, n_qubits=0):
+    if backend.configuration().simulator:
+        if n_qubits <= 0:
+            raise ValueError("Please specify number of qubits for a simulator.")
+        G=nx.complete_graph(n_qubits)
+    else:
+        n_qubits=backend.configuration().n_qubits
+        G=nx.Graph()
+        G.add_nodes_from(np.arange(n_qubits))
+        G.add_edges_from(backend.configuration().coupling_map)
+    return G
+
 def randomCircuit(G, cnots=0, depth=0, barrier=False): #Either cnots or depth can be zero, which means "unspecified".
     V = list(G.nodes)
     num_V = len(V)
