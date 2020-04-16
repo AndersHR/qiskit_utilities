@@ -8,7 +8,7 @@ import re
 #from qiskit.visualization import *
 #from qiskit.providers.jobstatus import JOB_FINAL_STATES, JobStatus
 #import scipy as sp 
-import matplotlib as mpl
+#import matplotlib as mpl
 #import sys
 #sys.path.append('../')
 from GenerateRandomCircuit import *
@@ -215,7 +215,9 @@ def approx3rdroot(theta, phi, lamb):
     return theta2, phi2, lamb2, d1
 
 
-def internal_circuit_from_qasm(qasm):
+def internal_circuit_from_qasm(qasmx):
+    qasm = qasmx.replace("pi", str(math.pi))
+    #print(qasm)
     circ = []
     num_qbits = 0
     num_cbits = 0
